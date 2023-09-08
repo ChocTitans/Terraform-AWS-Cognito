@@ -4,7 +4,6 @@ terraform {
         bucket = "cognito-terraform-backend"
         key = "backend.tfstate"
         encrypt = true
-        dynamodb_table = "tf-backend"
     }
 
 }
