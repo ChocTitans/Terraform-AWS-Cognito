@@ -27,11 +27,11 @@ jobs:
     - name: terraform init
       run: terraform init
       
-    - name: terraform destroy
-      run: terraform destroy -lock=false -auto-approve
+    #- name: terraform destroy
+    #  run: terraform destroy -lock=false -auto-approve
 
-    #- name: terraform plan
-    #  run: terraform plan -lock=false -out=tfplan
+    - name: terraform plan
+      run: terraform plan -lock=false -out=tfplan
 
-    #- name: terraform apply
-    #  run: terraform apply -lock=false -auto-approve tfplan
+    - name: terraform apply
+      run: terraform apply -lock=false -auto-approve tfplan
