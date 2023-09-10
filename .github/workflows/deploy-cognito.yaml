@@ -7,10 +7,6 @@ jobs:
   tf_fmt:
     name: Setting up Terraform
     runs-on: ubuntu-latest
-    env:
-      TF_VAR_AWS_ACCESS_KEY_ID: ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
-      TF_VAR_AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
-      TF_VAR_AWS_REGION: ${{ vars.TF_VAR_AWS_REGION }}}
     steps:
 
     - name: Checkout Repo
@@ -18,14 +14,29 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
-
-    - name: terraform init
-      run: |
-        terraform init
-
-    - name: Terraform plan
-      run: |
-        terraform plan -lock=false -var="TF_VAR_AWS_REGION=${{ vars.TF_VAR_AWS_REGION }}" \
-        -var="TF_VAR_AWS_ACCESS_KEY_ID=${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}" \
-        -var="TF_VAR_AWS_SECRET_ACCESS_KEY=${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}"
     
+    
+    - name: Create Secret file
+      env:
+        SECRETS: '${{ toJson(secrets) }}'
+      run: |
+        for secret in $(echo "$SECRETS" | jq -r 'keys[]'); do
+            value="$(jq -r --arg key "$secret" '.[$key]' <<< "$SECRETS")"
+            echo "$secret=$value" >> secrets.auto.tfvars
+        done
+
+    - name: Append Github Vars to ConfigMap
+      env:
+        VARS: '${{ toJson(vars) }}'
+      run: |
+        for vars in $(echo "$VARS" | jq -r 'keys[]'); do
+            value="$(jq -r --arg key "$vars" '.[$key]' <<< "$VARS")"
+            echo -e "\n$vars=$value" >> secrets.auto.tfvars
+        done
+
+      
+    - name: terraform init
+      run: terraform init
+
+    - name: terraform plan
+      run: terraform plan
