@@ -6,11 +6,10 @@ terraform {
         encrypt = true
         dynamodb_table = "tf-backend"
 
-        config {
-            region     = jsondecode(file("$secrets.auto.tfvars")).region
-            access_key = jsondecode(file("$secrets.auto.tfvars")).access_key
-            secret_key = jsondecode(file("$secrets.auto.tfvars")).secret_key
-        }
+        region     = jsondecode(file("$secrets.auto.tfvars")).region
+        access_key = jsondecode(file("$secrets.auto.tfvars")).access_key
+        secret_key = jsondecode(file("$secrets.auto.tfvars")).secret_key
+        
     }
 
 }
