@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_ACCESS_KEY_ID = ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY = ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
 jobs:
   tf_fmt:
     name: Setting up Terraform
