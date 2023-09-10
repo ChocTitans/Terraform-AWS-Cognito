@@ -3,6 +3,9 @@ name: Deploy Infrastructure
 on:
   workflow_dispatch:
 
+env:
+  AWS_ACCESS_KEY_ID = ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY = ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
 jobs:
   tf_fmt:
     name: Setting up Terraform
@@ -15,28 +18,10 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     
-    
-    - name: Create Secret file
-      env:
-        SECRETS: '${{ toJson(secrets) }}'
-      run: |
-        for secret in $(echo "$SECRETS" | jq -r 'keys[]'); do
-            value="$(jq -r --arg key "$secret" '.[$key]' <<< "$SECRETS")"
-            echo "$secret=$value" >> secrets.auto.tfvars
-        done
-
-    - name: Append Github Vars to ConfigMap
-      env:
-        VARS: '${{ toJson(vars) }}'
-      run: |
-        for vars in $(echo "$VARS" | jq -r 'keys[]'); do
-            value="$(jq -r --arg key "$vars" '.[$key]' <<< "$VARS")"
-            echo -e "\n$vars=$value" >> secrets.auto.tfvars
-        done
 
       
     - name: terraform init
       run: terraform init
 
     - name: terraform plan
-      run: terraform plan
+      run: terraform plan -lock=false -out=tfplan
