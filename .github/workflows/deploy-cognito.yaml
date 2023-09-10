@@ -6,6 +6,7 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   tf_fmt:
     name: Setting up Terraform
@@ -18,10 +19,11 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     
-
-      
     - name: terraform init
       run: terraform init
 
     - name: terraform plan
       run: terraform plan -lock=false -out=tfplan
+
+    - name: terraform apply
+      run: terraform apply -lock=false -auto-approve tfplan
