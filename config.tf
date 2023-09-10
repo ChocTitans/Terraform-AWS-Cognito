@@ -5,6 +5,7 @@ terraform {
         key = "backend.tfstate"
         encrypt = true
         dynamodb_table = "tf-backend"
+        region = "eu-west-2"
     }
 
 }
