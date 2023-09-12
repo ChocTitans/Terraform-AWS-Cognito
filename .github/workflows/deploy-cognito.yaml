@@ -15,14 +15,13 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     
-    - name: Terraform Init
-      run: terraform init
-
-    - name: Terraform destroy
-      run: terraform destroy -auto-approve -lock=false
-
-    #- name: Terraform Plan  
-     # run: terraform plan -lock=false
+    - name: Configure AWS Credentials
+      env:
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        terraform init
+        terraform plan -lock=false
+        terraform apply -auto-approve -lock=false
     
-    #- name: Terraform Apply
-    #  run: terraform apply -auto-approve -lock=false
