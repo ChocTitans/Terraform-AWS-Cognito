@@ -12,3 +12,8 @@ variable "aws_secret_key" {
   description = "AWS secret access key."
   type        = string
 }
+
+variable "profile" {
+  description = "AWS profile name."
+  type        = string
+}
