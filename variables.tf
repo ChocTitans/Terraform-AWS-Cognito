@@ -13,7 +13,3 @@ variable "aws_secret_key" {
   type        = string
 }
 
-variable "profile" {
-  description = "AWS profile name."
-  type        = string
-}
