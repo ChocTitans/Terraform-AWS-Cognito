@@ -36,8 +36,3 @@ resource "aws_cognito_user_pool_client" "example" {
   ]
   supported_identity_providers = ["COGNITO"]
 }
-
-
-output "user_pool_id" {
-  value = aws_cognito_user_pool.example.id
-}
