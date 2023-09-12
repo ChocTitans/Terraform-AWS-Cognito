@@ -25,7 +25,7 @@ jobs:
         terraform init \
         -backend-config=access_key=${TF_VAR_aws_access_key} \
         -backend-config=secret_key=${TF_VAR_aws_secret_key} \
-        -backend-config=region=${{ vars.AWS_REGION }}" \
+        -backend-config=region=${{ vars.AWS_REGION }} \
         
 
     - name: Terraform plan
