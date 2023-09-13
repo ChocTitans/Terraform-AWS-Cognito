@@ -19,6 +19,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_REGION }}
 
+    - name: Export TF_VARS
+      run: |
+        export TF_VAR_REGION=eu-west-2
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     
@@ -32,9 +36,7 @@ jobs:
     #  run: terraform destroy -lock=false -auto-approve
 
     - name: Terraform plan
-      run: |
-        export TF_VAR_REGION=eu-west-2
-        terraform plan -lock=false -out=tfplan
+      run: terraform plan -lock=false -out=tfplan
 
     - name: Terraform apply
       run: terraform apply -lock=false -auto-approve tfplan
