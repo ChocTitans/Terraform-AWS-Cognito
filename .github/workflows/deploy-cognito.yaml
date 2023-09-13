@@ -21,7 +21,7 @@ jobs:
 
     - name: Export TF_VARS
       run: |
-        export TF_VAR_AWS_REGION="${{ vars.AWS_REGION }}"
+        export TF_VAR_REGION='${{ vars.AWS_REGION }}'
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
