@@ -1,11 +1,11 @@
 resource "aws_cognito_user_pool_domain" "openfga" {
-  domain       = "openfga"  # Replace with your desired domain name
+  domain       = "openfga"
   user_pool_id = aws_cognito_user_pool.openfga.id
 }
 
 resource "aws_cognito_user_pool" "openfga" {
   name            = "openfga-user-pool"
-  alias_attributes = ["email"] # Email is the only alias attribute
+  alias_attributes = ["email"] #
   auto_verified_attributes = ["email"]
   password_policy {
     minimum_length   = 8

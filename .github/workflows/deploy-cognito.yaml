@@ -2,7 +2,8 @@ name: Deploy Infrastructure
 
 on:
   workflow_dispatch:
-
+env:
+  TF_VAR_AWS_REGION: ${{ vars.AWS_REGION }}
 
 jobs:
   tf_fmt:
@@ -13,25 +14,27 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-
     - name: Set up AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        aws-access-key-id: ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.TF_VAR_AWS_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     
-    - name: terraform init
+    - name: Terraform init
       run: terraform init
+
+    - name: Terraform prepare
+      run: terraform validate
       
-    - name: terraform destroy
-      run: terraform destroy -lock=false -auto-approve
+    #- name: terraform destroy
+    #  run: terraform destroy -lock=false -auto-approve
 
-    #- name: terraform plan
-    #  run: terraform plan -lock=false -out=tfplan
+    - name: Terraform plan
+      run: terraform plan -lock=false -out=tfplan
 
-    #- name: terraform apply
-    #  run: terraform apply -lock=false -auto-approve tfplan
+    - name: Terraform apply
+      run: terraform apply -lock=false -auto-approve tfplan
