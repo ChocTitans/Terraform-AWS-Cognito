@@ -1,8 +1,8 @@
 terraform {
 
     backend "s3" {
-        bucket = "cognito-terraform-backend"
-        key = "backend.tfstate"
+        bucket = var.bucket
+        key = var.key
         encrypt = true
     }
 
