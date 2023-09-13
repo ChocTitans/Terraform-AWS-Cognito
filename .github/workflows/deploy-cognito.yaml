@@ -2,8 +2,6 @@ name: Deploy Infrastructure
 
 on:
   workflow_dispatch:
-env:
-  TF_VAR_AWS_REGION: ${{ vars.AWS_REGION }}
 
 jobs:
   tf_fmt:
@@ -20,6 +18,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Export TF_VARS
+      run: |
+        export TF_VAR_AWS_REGION="${{ vars.AWS_REGION }}"
+        echo TF_VAR_AWS_REGION
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
